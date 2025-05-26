@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>727</width>
+    <height>499</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>购物商城</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resource.qrc">
+    <normaloff>:/new/icons/icon.png</normaloff>:/new/icons/icon.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow {
+	border-image: url(:/new/icons/UI.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+	background-size:cover;
+}
+
+/* 强制所有子控件透明 */
+QMainWindow * {
+    background-color: transparent !important;
+}</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="userLabel">
+        <property name="styleSheet">
+         <string notr="true">
+
+QLabel{
+		font-family:&quot;Microsoft YaHei&quot;;
+		font-size:12px;
+		font-weight:bold;
+		color:black;
+		border:none;
+}</string>
+        </property>
+        <property name="text">
+         <string>User</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="userB">
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+		border:0.5px solid white;
+		border-radius:6px;
+		background-color:rgb(90,194,198);
+		min-width:80px;
+		font-family:&quot;Microsoft YaHei&quot;;
+		font-size:11pt;
+		font-weight:bold;
+		color:white;
+}
+QPushButton:hover{
+		border:0.5px solid white;
+		border-radius:6px;
+		background-color:#1fab89;
+		min-width:80px;
+		font-family:&quot;Microsoft YaHei&quot;;
+		font-size:10pt;
+		font-weight:bold;
+		color:white;
+}</string>
+        </property>
+        <property name="text">
+         <string>login/out</string>
+        </property>
+        <property name="icon">
+         <iconset resource="resource.qrc">
+          <normaloff>:/new/icons/user.png</normaloff>:/new/icons/user.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit">
+        <property name="styleSheet">
+         <string notr="true">	*{
+		background-color: rgb(196, 239, 255);
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="placeholderText">
+         <string>搜索</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="searchButton">
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+		border:0.5px solid white;
+		border-radius:6px;
+		background-color:rgb(90,194,198);
+		min-width:80px;
+		font-family:&quot;Microsoft YaHei&quot;;
+		font-size:11pt;
+		font-weight:bold;
+		color:white;
+}
+QPushButton:hover{
+		border:0.5px solid white;
+		border-radius:6px;
+		background-color:#1fab89;
+		min-width:80px;
+		font-family:&quot;Microsoft YaHei&quot;;
+		font-size:10pt;
+		font-weight:bold;
+		color:white;
+}</string>
+        </property>
+        <property name="text">
+         <string>搜索</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="bankB">
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+		border:0.5px solid white;
+		border-radius:6px;
+		background-color:rgb(90,194,198);
+		min-width:80px;
+		font-family:&quot;Microsoft YaHei&quot;;
+		font-size:11pt;
+		font-weight:bold;
+		color:white;
+}
+QPushButton:hover{
+		border:0.5px solid white;
+		border-radius:6px;
+		background-color:#1fab89;
+		min-width:80px;
+		font-family:&quot;Microsoft YaHei&quot;;
+		font-size:10pt;
+		font-weight:bold;
+		color:white;
+}</string>
+        </property>
+        <property name="text">
+         <string>我的钱包</string>
+        </property>
+        <property name="icon">
+         <iconset resource="resource.qrc">
+          <normaloff>:/new/icons/wallet.png</normaloff>:/new/icons/wallet.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="boughtB">
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+		border:0.5px solid white;
+		border-radius:6px;
+		background-color:rgb(90,194,198);
+		min-width:80px;
+		font-family:&quot;Microsoft YaHei&quot;;
+		font-size:11pt;
+		font-weight:bold;
+		color:white;
+}
+QPushButton:hover{
+		border:0.5px solid white;
+		border-radius:6px;
+		background-color:#1fab89;
+		min-width:80px;
+		font-family:&quot;Microsoft YaHei&quot;;
+		font-size:10pt;
+		font-weight:bold;
+		color:white;
+}</string>
+        </property>
+        <property name="text">
+         <string>已买到的宝贝</string>
+        </property>
+        <property name="icon">
+         <iconset resource="resource.qrc">
+          <normaloff>:/new/icons/box.png</normaloff>:/new/icons/box.png</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>702</width>
+        <height>102</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QScrollArea {
+    border: 0.5px solid rgba(255, 255, 255, 0.5);  /* 半透明白色边框 */
+    border-radius: 6px;
+    background-color: transparent;                 /* 主背景透明 */
+    color: white;                                  /* 文字颜色（根据背景调整） */
+    font-family: &quot;Microsoft YaHei&quot;;
+    font-size: 11pt;
+    font-weight: bold;
+}
+
+/* 设置视口（内容区域）透明 */
+QScrollArea::viewport {
+    background-color: transparent;
+}
+
+/* 表头透明 */
+QScrollArea::section {
+    background-color: transparent;
+    border: none;                  /* 可选：移除表头边框 */
+}
+
+
+QScrollArea {
+    min-width: 700px;
+    max-width: 70000px;
+    min-height: 100px;
+    max-height: 100px;
+}
+
+
+/* 选中状态效果 */
+QScrollArea::item:selected {
+    background-color: rgba(255, 255, 255, 0.2);  /* 半透明选中高亮 */
+}</string>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>713</width>
+         <height>100</height>
+        </rect>
+       </property>
+       <widget class="QWidget" name="widget" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>771</width>
+          <height>101</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QWidget {
+    border: 0.5px solid rgba(255, 255, 255, 0.5);  /* 半透明白色边框 */
+    border-radius: 6px;
+    background-color: transparent;                 /* 主背景透明 */
+    color: black;                                  /* 文字颜色（根据背景调整） */
+    font-family: &quot;Microsoft YaHei&quot;;
+    font-size: 11pt;
+    font-weight: bold;
+}
+
+/* 设置视口（内容区域）透明 */
+QWidget::viewport {
+    background-color: transparent;
+}
+
+/* 表头透明 */
+QWidget::section {
+    background-color: transparent;
+    border: none;                  /* 可选：移除表头边框 */
+}
+
+
+
+
+
+/* 选中状态效果 */
+QScrollArea::item:selected {
+    background-color: rgba(255, 255, 255, 0.2);  /* 半透明选中高亮 */
+}</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="styleSheet">
+       <string notr="true">/* ---------------------- QTabWidget 整体设置 ---------------------- */
+QTabWidget {
+    background-color: transparent;  /* 主控件透明 */
+    border: none !important;        /* 移除默认边框 */
+}
+
+/* ---------------------- 标签页容器（内容区域） ---------------------- */
+QTabWidget::pane {
+    border: 1px solid rgba(255, 255, 255, 0.3);  /* 半透明白色边框 */
+    border-top: none;               /* 与标签栏衔接处去边框 */
+    border-radius: 0 4px 4px 4px;   /* 右下角圆角匹配标签栏 */
+    background-color: rgba(0, 0, 0, 0.1);  /* 半透明黑色背景（可选） */
+    margin-top: -1px;               /* 消除与标签栏的间隙 */
+    padding: 5px;
+}
+
+/* ---------------------- 标签栏（QTabBar） ---------------------- */
+QTabBar {
+    background: transparent;        /* 标签栏背景透明 */
+    spacing: 3px;                   /* 标签之间的间距 */
+}
+
+/* ---------------------- 单个标签页（未选中） ---------------------- */
+QTabBar::tab {
+    background-color: rgba(255, 255, 255, 0.2);  /* 半透明白色背景 */
+    border: 1px solid rgba(255, 255, 255, 0.3);  /* 半透明边框 */
+    border-bottom: none;            /* 底部与内容区域衔接 */
+    border-radius: 4px 4px 0 0;     /* 上侧圆角 */
+    padding: 8px 15px;              /* 内边距 */
+    color: white;                   /* 文字颜色 */
+    font-weight: bold;
+    margin-right: 2px;              /* 标签间右侧间距 */
+}
+
+/* ---------------------- 标签页（悬停效果） ---------------------- */
+QTabBar::tab:hover {
+    background-color: rgba(255, 255, 255, 0.3);  /* 更高透明度 */
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ---------------------- 标签页（选中状态） ---------------------- */
+QTabBar::tab:selected {
+    background-color: rgba(255, 255, 255, 0.4);  /* 高亮选中标签 */
+    border-color: rgba(255, 255, 255, 0.6);
+    border-bottom: 1px solid transparent;  /* 隐藏底部边框 */
+}
+
+/* ---------------------- 标签页（禁用状态） ---------------------- */
+QTabBar::tab:disabled {
+    background-color: rgba(128, 128, 128, 0.2);
+    color: rgba(255, 255, 255, 0.5);
+}</string>
+      </property>
+      <property name="currentIndex">
+       <number>-1</number>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="addB">
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+	border: 0.5px solid white;
+	border-radius: 6px;
+	background-color: rgb(90, 194, 198);
+	min-width: 80px;
+	font-family: &quot;Microsoft YaHei&quot;;
+	font-size: 11pt;
+	font-weight: bold;
+	color: white;
+}
+
+QPushButton:hover {
+	background-color: #1fab89;
+}
+
+QPushButton:pressed {
+	background-color: #178f75;
+}
+
+QPushButton:disabled {
+	background-color: gray;
+	color: lightgray;
+}
+</string>
+        </property>
+        <property name="text">
+         <string>添加到购物车</string>
+        </property>
+        <property name="icon">
+         <iconset resource="resource.qrc">
+          <normaloff>:/new/icons/addCart.png</normaloff>:/new/icons/addCart.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="cartB">
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+	border: 0.5px solid white;
+	border-radius: 6px;
+	background-color: rgb(90, 194, 198);
+	min-width: 80px;
+	font-family: &quot;Microsoft YaHei&quot;;
+	font-size: 11pt;
+	font-weight: bold;
+	color: white;
+}
+
+QPushButton:hover {
+	background-color: #1fab89;
+}
+
+QPushButton:pressed {
+	background-color: #178f75;
+}
+
+QPushButton:disabled {
+	background-color: gray;
+	color: lightgray;
+}
+</string>
+        </property>
+        <property name="text">
+         <string>我的购物车(0)</string>
+        </property>
+        <property name="icon">
+         <iconset resource="resource.qrc">
+          <normaloff>:/new/icons/cart.png</normaloff>:/new/icons/cart.png</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
+ <connections/>
+</ui>

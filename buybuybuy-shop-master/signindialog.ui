@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SignInDialog</class>
+ <widget class="QDialog" name="SignInDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>300</width>
+    <height>220</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>300</width>
+    <height>220</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>300</width>
+    <height>220</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>登录/注册</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resource.qrc">
+    <normaloff>:/new/icons/user.png</normaloff>:/new/icons/user.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+    
+	
+	
+	background-color: rgb(203, 231, 255);
+}
+
+/* 强制所有子控件透明 */
+QDialog*{
+    background-color: transparent !important;
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="font">
+        <font>
+         <family>Microsoft YaHei</family>
+         <pointsize>-1</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel{
+		font-family:&quot;Microsoft YaHei&quot;;
+		font-size:30px;
+		font-weight:bold;
+		color:black;
+		border:none;
+}</string>
+       </property>
+       <property name="text">
+        <string>登录或注册</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QtMaterialAutoComplete" name="nameIn">
+       <property name="maximumSize">
+        <size>
+         <width>200</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">*{
+	
+	background-color: rgb(222, 241, 255);
+}</string>
+       </property>
+       <property name="placeholderText">
+        <string>用户名</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QLineEdit" name="pwIn">
+       <property name="maximumSize">
+        <size>
+         <width>200</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">*{
+	background-color: rgb(222, 241, 255);
+}</string>
+       </property>
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
+       </property>
+       <property name="placeholderText">
+        <string>密码</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QPushButton" name="loginB">
+       <property name="styleSheet">
+        <string notr="true">QPushButton{
+		border:0.5px solid white;
+		border-radius:6px;
+		background-color:rgb(90,194,198);
+		min-width:80px;
+		font-family:&quot;Microsoft YaHei&quot;;
+		font-size:11pt;
+		font-weight:bold;
+		color:white;
+}
+QPushButton:hover{
+		border:0.5px solid white;
+		border-radius:6px;
+		background-color:#1fab89;
+		min-width:80px;
+		font-family:&quot;Microsoft YaHei&quot;;
+		font-size:10pt;
+		font-weight:bold;
+		color:white;
+}</string>
+       </property>
+       <property name="text">
+        <string>登录</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="signupB">
+       <property name="styleSheet">
+        <string notr="true">QPushButton{
+		border:0.5px solid white;
+		border-radius:6px;
+		background-color:rgb(90,194,198);
+		min-width:80px;
+		font-family:&quot;Microsoft YaHei&quot;;
+		font-size:11pt;
+		font-weight:bold;
+		color:white;
+}
+QPushButton:hover{
+		border:0.5px solid white;
+		border-radius:6px;
+		background-color:#1fab89;
+		min-width:80px;
+		font-family:&quot;Microsoft YaHei&quot;;
+		font-size:10pt;
+		font-weight:bold;
+		color:white;
+}</string>
+       </property>
+       <property name="text">
+        <string>注册</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QtMaterialAutoComplete</class>
+   <extends>QLineEdit</extends>
+   <header location="global">qtmaterialautocomplete.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
+ <connections/>
+</ui>
