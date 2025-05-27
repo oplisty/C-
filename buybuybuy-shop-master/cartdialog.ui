@@ -28,7 +28,7 @@
 	font-family:&quot;Microsoft YaHei&quot;;
 	font-size:11pt;
 	font-weight:bold;
-	color:white;
+	color:black;
 }
 
 </string>
@@ -154,7 +154,7 @@ QPushButton:disabled {
 	font-family:&quot;Microsoft YaHei&quot;;
 	font-size:11pt;
 	font-weight:bold;
-	color:white;
+	color:black;
 }
 
 </string>
@@ -214,6 +214,32 @@ QPushButton:disabled {
      </item>
      <item>
       <widget class="QPushButton" name="payB">
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	border: 0.5px solid white;
+	border-radius: 6px;
+	background-color: rgb(90, 194, 198);
+	min-width: 80px;
+	font-family: &quot;Microsoft YaHei&quot;;
+	font-size: 11pt;
+	font-weight: bold;
+	color: white;
+}
+
+QPushButton:hover {
+	background-color: #1fab89;
+}
+
+QPushButton:pressed {
+	background-color: #178f75;
+}
+
+QPushButton:disabled {
+	background-color: gray;
+	color: lightgray;
+}
+</string>
+       </property>
        <property name="text">
         <string>结算</string>
        </property>
@@ -221,6 +247,32 @@ QPushButton:disabled {
      </item>
      <item>
       <widget class="QPushButton" name="cancelB">
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	border: 0.5px solid white;
+	border-radius: 6px;
+	background-color: rgb(90, 194, 198);
+	min-width: 80px;
+	font-family: &quot;Microsoft YaHei&quot;;
+	font-size: 11pt;
+	font-weight: bold;
+	color: white;
+}
+
+QPushButton:hover {
+	background-color: #1fab89;
+}
+
+QPushButton:pressed {
+	background-color: #178f75;
+}
+
+QPushButton:disabled {
+	background-color: gray;
+	color: lightgray;
+}
+</string>
+       </property>
        <property name="text">
         <string>返回</string>
        </property>

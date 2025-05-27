@@ -506,27 +506,82 @@ T* MainWindow::find(QVector<T>& L, int id) {
 
 void MainWindow::on_userB_clicked()
 {
-    if(login){
-        int comf=QMessageBox::question(this,"登出","确定退出登录吗？"
-                                         ,QMessageBox::Ok,QMessageBox::Cancel);
-        if(comf!=QMessageBox::Ok){
+    if (login) {
+        // 创建自定义对话框
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("确认登出");
+        msgBox.setText("确定要退出当前账号吗？");
+        msgBox.setIcon(QMessageBox::Question);
+
+        // 添加自定义按钮
+        QPushButton *confirmButton = msgBox.addButton("确定退出", QMessageBox::YesRole);
+        QPushButton *cancelButton = msgBox.addButton("取消", QMessageBox::NoRole);
+
+        // 设置样式表
+        msgBox.setStyleSheet(
+            "QMessageBox {"
+            "   background-color: #f5f5f5;"          // 对话框背景色
+            "   font-family: 微软雅黑;"
+            "   font-size: 14px;"
+            "   border: 1px solid #dcdcdc;"
+            "}"
+            "QLabel {"
+            "   color: #333;"                        // 文本颜色
+            "}"
+            "QPushButton {"
+            "border:0.5px solid white;"
+            "border-radius:6px;"
+            "background-color:rgb(90,194,198);"
+            "min-width:80px;"
+            "font-family:'Microsoft YaHei';"
+            "font-size:11pt;"
+            "font-weight:bold;"
+            "color:white;"              // 按钮最小宽度
+            "}"
+            "QPushButton:hover {"
+            "border:0.5px solid white;"
+            "border-radius:6px;"
+            "background-color:#1fab89;"
+            "min-width:80px;"
+            "font-family:'Microsoft YaHei';"
+            "font-size:10pt;"
+            "font-weight:bold;"
+            "color:white;      "    // 悬停背景
+            "}"
+
+            "QPushButton[text='确定退出'] {"
+            "   background-color: #1890ff;"          // 确定按钮颜色（蓝色）
+            "   color: white;"
+            "   border-color: #1890ff;"
+            "}"
+            "QPushButton[text='确定退出']:hover {"
+            "   background-color: #40a9ff;"          // 悬停加深
+            "}"
+            "QPushButton[text='取消'] {"
+            "   background-color: #f0f0f0;"          // 取消按钮颜色（浅灰）
+            "   color: #666;"
+            "}"
+            );
+
+        // 显示对话框并等待用户操作
+        msgBox.exec();
+
+        // 判断用户点击的按钮
+        if (msgBox.clickedButton() == confirmButton) {
+            // 执行登出逻辑
+            u = User();
+            c = Cart();
+            login = false;
+            ui->userLabel->setText("用户未登录");
+            ui->userB->setText("登录/注册");
+            ui->bankB->hide();
+            ui->boughtB->hide();
+            ui->addB->hide();
+            ui->cartB->hide();
             readAndShowGoods();
-            return;
         }
-        u=User();
-        c=Cart();
-        login=false;
-        ui->userLabel->setText("用户未登录");
-        ui->userB->setText("登录/注册");
-        ui->bankB->hide();
-        ui->boughtB->hide();
-        ui->addB->hide();
-        ui->cartB->setText("我的购物车(0)");
-        ui->cartB->hide();
-        readAndShowGoods();
         return;
     }
-
     SignInDialog dia(&u,this);
     dia.setWindowModality(Qt::ApplicationModal);
     dia.exec();
@@ -555,129 +610,173 @@ void MainWindow::on_userB_clicked()
 
 }
 
-void MainWindow::on_addB_clicked()
-{
+void MainWindow::on_addB_clicked() {
     QTableWidget* t = dynamic_cast<QTableWidget*>(ui->tabWidget->currentWidget());
-    if (t == nullptr) {
-        QMessageBox::information(this, "FATAL ERROR",
-                                 "mainwindow.cpp:on_addB_clicked():获取tabWidget当前页QTableWidget*转换失败");
-        return;
-    }
-
-    // 保存当前分类索引和选中行
-    int currentIndex = ui->tabWidget->currentIndex();
-    int r = t->currentRow();
-
-    // 检查是否选中商品
-    if (r == -1) {
-        QMessageBox::information(this, "未选择商品", "未选择商品，请重试");
-        return;
-    }
-
-    // 保存原始商品ID
-    int chooseid = t->item(r, 0)->data(Qt::UserRole).toInt();
-
-    // 刷新商品列表（可能导致行号变化）
-    readAndShowGoods();
-
-    // 重新获取当前分类的表格控件
-    ui->tabWidget->setCurrentIndex(currentIndex);
-    t = dynamic_cast<QTableWidget*>(ui->tabWidget->currentWidget());
     if (!t) {
-        QMessageBox::critical(this, "错误", "无法加载商品列表");
+        QMessageBox box(QMessageBox::Critical, "错误", "无法获取商品列表");
+        box.setStyleSheet(R"(
+            QMessageBox {
+                background-color: #f5f5f5;
+                font-family: 微软雅黑;
+                font-size: 14px;
+            }
+            QLabel {
+                color: #333;
+            }
+            QPushButton {
+                background-color: #1890ff;
+                color: white;
+                border-radius: 4px;
+                padding: 6px 16px;
+            }
+            QPushButton:hover {
+                background-color: #40a9ff;
+            }
+        )");
+        box.exec();
         return;
     }
 
-    // 根据商品ID重新定位行号
-    int newRow = -1;
-    for (int i = 0; i < t->rowCount(); ++i) {
-        if (t->item(i, 0)->data(Qt::UserRole).toInt() == chooseid) {
-            newRow = i;
+    int r = t->currentRow();
+    if (r == -1 || !t->item(r, 0) || !t->item(r, 4)) {
+        QMessageBox box(QMessageBox::Information, "未选择商品", "请先选择商品");
+        box.setStyleSheet(R"(
+            QMessageBox {
+                background-color: #f5f5f5;
+                font-family: 微软雅黑;
+                font-size: 14px;
+            }
+            QLabel {
+                color: #333;
+            }
+            QPushButton {
+                background-color: #1890ff;
+                color: white;
+                border-radius: 4px;
+                padding: 6px 16px;
+            }
+            QPushButton:hover {
+                background-color: #40a9ff;
+            }
+        )");
+        box.exec();
+        return;
+    }
+
+    int id = t->item(r, 0)->data(Qt::UserRole).toInt();
+    int restAmount = t->item(r, 4)->data(Qt::UserRole).toInt();
+    QString name = t->item(r, 0)->text();
+
+    QInputDialog inputDialog(this);
+    inputDialog.setWindowTitle("购买数量");
+    inputDialog.setLabelText("请输入要购买的数量（1~" + QString::number(restAmount) + "）：");
+    inputDialog.setIntMinimum(1);
+    inputDialog.setIntMaximum(restAmount);
+    inputDialog.setIntValue(1);
+    inputDialog.setStyleSheet(R"(
+        QDialog {
+            background-color: #f5f5f5;
+            font-family: 微软雅黑;
+            font-size: 14px;
+        }
+        QLabel {
+            color: #333;
+        }
+        QSpinBox {
+            background: white;
+            border: 1px solid #dcdcdc;
+            border-radius: 4px;
+            padding: 5px;
+        }
+        QPushButton[text="OK"] {
+            background: #1890ff;
+            color: white;
+            border-radius: 4px;
+            padding: 8px 16px;
+        }
+        QPushButton[text="Cancel"] {
+            background: #f0f0f0;
+            color: #666;
+            border-radius: 4px;
+            padding: 8px 16px;
+        }
+        QPushButton:hover {
+            background: #40a9ff;
+        }
+    )");
+
+    if (inputDialog.exec() == QDialog::Accepted) {
+        int amount = inputDialog.intValue();
+        int category = ui->tabWidget->currentIndex();
+        Product* product = nullptr;
+
+        switch (category) {
+        case 0: { // 书籍
+            QString author = t->item(r, 1)->text();
+            QString desc = t->item(r, 2)->text();
+            double price = t->item(r, 3)->data(Qt::UserRole).toDouble();
+            product = new Book(id, name, desc, price, amount, author);
             break;
         }
-    }
+        case 1: { // 电子
+            QString brand = t->item(r, 1)->text();
+            QString desc = t->item(r, 2)->text();
+            double price = t->item(r, 3)->data(Qt::UserRole).toDouble();
+            product = new Elec(id, name, desc, price, amount, brand);
+            break;
+        }
+        case 2: { // 服装
+            QString sexStr = t->item(r, 1)->text();
+            Clothes::Sex sex = Clothes::General;
+            if (sexStr == "男装") sex = Clothes::Male;
+            else if (sexStr == "女装") sex = Clothes::Female;
+            QString desc = t->item(r, 2)->text();
+            double price = t->item(r, 3)->data(Qt::UserRole).toDouble();
+            product = new Clothes(id, name, desc, price, amount, sex);
+            break;
+        }
+        case 3: { // 食品
+            QString desc = t->item(r, 1)->text();
+            QDate date = QDate::fromString(t->item(r, 3)->text());
+            double price = t->item(r, 2)->data(Qt::UserRole).toDouble();
+            product = new Food(id, name, desc, price, amount, date);
+            break;
+        }
+        }
 
-    // 处理商品不存在的情况
-    if (newRow == -1) {
-        QMessageBox::information(this, "错误", "商品已不存在，请重新选择");
-        return;
-    }
+        if (product) {
+            c.addProduct(product);
+            restAmount -= amount;
+            t->item(r, 4)->setData(Qt::UserRole, restAmount);
+            t->item(r, 4)->setText(QString("%1 件").arg(restAmount));
+            ui->cartB->setText(QString("我的购物车(%1)").arg(c.getSize()));
+            saveCart();
 
-    // 设置新的选中行并验证ID
-    t->setCurrentCell(newRow, 0);
-    int id = t->item(newRow, 0)->data(Qt::UserRole).toInt();
-    if (id != chooseid) {
-        QMessageBox::information(this, "错误", "商品发生意外变动");
-        return;
+            QMessageBox box(QMessageBox::Information, "成功", "商品已添加到购物车！");
+            box.setStyleSheet(R"(
+                QMessageBox {
+                    background-color: #f5f5f5;
+                    font-family: 微软雅黑;
+                    font-size: 14px;
+                }
+                QLabel {
+                    color: #333;
+                }
+                QPushButton {
+                    background-color: #1890ff;
+                    color: white;
+                    border-radius: 4px;
+                    padding: 6px 16px;
+                }
+                QPushButton:hover {
+                    background-color: #40a9ff;
+                }
+            )");
+            box.exec();
+        }
     }
-
-    // 获取最新库存数据
-    QString name = t->item(newRow, 0)->text();
-    int restAmount = t->item(newRow, 4)->data(Qt::UserRole).toInt();
-
-    // 检查库存
-    if (restAmount <= 0) {
-        QMessageBox::information(this, "库存不足！", "抱歉，您选择的商品库存不足");
-        return;
-    }
-
-    // 根据分类处理商品添加逻辑
-    int categoryIndex = ui->tabWidget->currentIndex();
-    switch (categoryIndex) {
-    case 0: { // Book
-        QString author = t->item(newRow, 1)->text();
-        QString desc = t->item(newRow, 2)->text();
-        double price = t->item(newRow, 3)->data(Qt::UserRole).toDouble();
-        bool ask = false;
-        int amount = QInputDialog::getInt(this, "输入购买数量", "请输入购买数量：", 0, 0, restAmount, 1, &ask);
-        if (amount == 0 || !ask) return;
-        Book* b = new Book(id, name, desc, price, amount, author);
-        c.addProduct(b);
-        break;
-    }
-    case 1: { // Elec
-        QString brand = t->item(newRow, 1)->text();
-        QString desc = t->item(newRow, 2)->text();
-        double price = t->item(newRow, 3)->data(Qt::UserRole).toDouble();
-        bool ask = false;
-        int amount = QInputDialog::getInt(this, "输入购买数量", "请输入购买数量：", 0, 0, restAmount, 1, &ask);
-        if (amount == 0 || !ask) return;
-        Elec* e = new Elec(id, name, desc, price, amount, brand);
-        c.addProduct(e);
-        break;
-    }
-    case 2: { // Clothes
-        QString sexs = t->item(newRow, 1)->text();
-        Clothes::Sex sex = Clothes::General;
-        if (sexs == "男装") sex = Clothes::Male;
-        else if (sexs == "女装") sex = Clothes::Female;
-        QString desc = t->item(newRow, 2)->text();
-        double price = t->item(newRow, 3)->data(Qt::UserRole).toDouble();
-        bool ask = false;
-        int amount = QInputDialog::getInt(this, "输入购买数量", "请输入购买数量：", 0, 0, restAmount, 1, &ask);
-        if (amount == 0 || !ask) return;
-        Clothes* clo = new Clothes(id, name, desc, price, amount, sex);
-        c.addProduct(clo);
-        break;
-    }
-    case 3: { // Food
-        QString desc = t->item(newRow, 1)->text();
-        double price = t->item(newRow, 2)->data(Qt::UserRole).toDouble();
-        QDate date = QDate::fromString(t->item(newRow, 3)->text());
-        bool ask = false;
-        int amount = QInputDialog::getInt(this, "输入购买数量", "请输入购买数量：", 0, 0, restAmount, 1, &ask);
-        if (amount == 0 || !ask) return;
-        Food* f = new Food(id, name, desc, price, amount, date);
-        c.addProduct(f);
-        break;
-    }
-    }
-
-    // 更新购物车显示
-    ui->cartB->setText(QString("我的购物车(%1)").arg(c.getSize()));
-    saveCart();
-    readCart();
 }
+
 
 void MainWindow::on_cartB_clicked()
 {
@@ -1358,6 +1457,7 @@ void MainWindow::on_boughtB_clicked()
         QMessageBox::information(this,
                                  "还没有买到的宝贝",
                                  "还没有买到的宝贝");
+
         return;
     }
     BoughtDialog dia(&bought);

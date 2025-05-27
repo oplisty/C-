@@ -7,6 +7,32 @@ BoughtDialog::BoughtDialog(Cart* b,QWidget *parent) :
     bought(b)
 {
     ui->setupUi(this);
+    // 设置对话框样式
+    this->setStyleSheet(
+        "QDialog {"
+        "   background-color: #f5f5f5;"   // 背景色
+        "   font-family: 微软雅黑;"
+        "   font-size: 14px;"
+        "}"
+        "QTableWidget {"
+        "   background-color: white;"      // 表格背景
+        "   border: 1px solid #dcdcdc;"   // 边框
+        "}"
+        "QHeaderView::section {"
+        "   background-color: #1890ff;"   // 表头颜色
+        "   color: white;"
+        "   padding: 6px;"
+        "}"
+        "QPushButton {"
+        "   background-color: #1890ff;"   // 按钮颜色
+        "   color: white;"
+        "   border-radius: 4px;"
+        "   padding: 8px 16px;"
+        "}"
+        "QPushButton:hover {"
+        "   background-color: #40a9ff;"   // 悬停颜色
+        "}"
+        );
     showCart();
 }
 
