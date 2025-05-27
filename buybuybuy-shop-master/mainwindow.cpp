@@ -1353,40 +1353,89 @@ void MainWindow::on_subcategoryButtonClicked(int id)
     // 显示过滤后的商品列表
     QTableWidget *currentTable;
     switch (currentCategory) {
-    case 0:
+    case 0: // 书籍
         currentTable = &bookT;
+        currentTable->setColumnCount(5); // 与主分类一致
+        currentTable->setHorizontalHeaderLabels(QStringList() << "书名" << "作者" << "分类" << "价格" << "库存量");
         break;
-    case 1:
+    case 1: // 电子
         currentTable = &elecT;
+        currentTable->setColumnCount(5);
+        currentTable->setHorizontalHeaderLabels(QStringList() << "品名" << "品牌" << "分类" << "价格" << "库存量");
         break;
-    case 2:
+    case 2: // 服装
         currentTable = &clothesT;
+        currentTable->setColumnCount(5);
+        currentTable->setHorizontalHeaderLabels(QStringList() << "品名" << "性别" << "分类" << "价格" << "库存量");
         break;
-    case 3:
+    case 3: // 食品
         currentTable = &foodT;
+        currentTable->setColumnCount(5);
+        currentTable->setHorizontalHeaderLabels(QStringList() << "名称" << "分类" << "价格" << "生产日期" << "库存量");
         break;
     default:
         return;
     }
 
-    currentTable->clear();
-    currentTable->setColumnCount(4);
+    currentTable->clearContents();
     currentTable->setRowCount(filteredGoods.size());
-    currentTable->setHorizontalHeaderLabels(QStringList()
-                                            << "名称"
-                                            << "类型"
-                                            << "价格"
-                                            << "库存量");
+
     for (auto it = filteredGoods.begin(); it != filteredGoods.end(); it++) {
         int i = it - filteredGoods.begin();
-        currentTable->setItem(i, 0, new QTableWidgetItem((*it)->getName()));
-        currentTable->setItem(i, 1, new QTableWidgetItem((*it)->getDesc()));
-        currentTable->setItem(i, 2, new QTableWidgetItem(QString("%1 元").arg((*it)->getPrice())));
-        currentTable->setItem(i, 3, new QTableWidgetItem(QString("%1 件").arg((*it)->getAmount())));
-        currentTable->setItem(i, 4, new QTableWidgetItem(QString::number((*it)->type())));
-        currentTable->item(i, 2)->setData(Qt::UserRole, (*it)->getPrice());
-        currentTable->item(i, 3)->setData(Qt::UserRole, (*it)->getAmount());
-        currentTable->item(i, 0)->setData(Qt::UserRole, (*it)->getID());
+        Product *product = *it;
+
+        switch (currentCategory) {
+        case 0: { // 书籍
+            Book *book = dynamic_cast<Book*>(product);
+            currentTable->setItem(i, 0, new QTableWidgetItem(book->getName()));
+            currentTable->setItem(i, 1, new QTableWidgetItem(book->getAuthor()));
+            currentTable->setItem(i, 2, new QTableWidgetItem(book->getDesc()));
+            currentTable->setItem(i, 3, new QTableWidgetItem(QString("%1 元").arg(book->getPrice())));
+            currentTable->setItem(i, 4, new QTableWidgetItem(QString("%1 本").arg(book->getAmount())));
+            // 存储关键数据到UserRole
+            currentTable->item(i, 0)->setData(Qt::UserRole, book->getID());
+            currentTable->item(i, 3)->setData(Qt::UserRole, book->getPrice());
+            currentTable->item(i, 4)->setData(Qt::UserRole, book->getAmount());
+            break;
+        }
+        case 1: { // 电子
+            Elec *elec = dynamic_cast<Elec*>(product);
+            currentTable->setItem(i, 0, new QTableWidgetItem(elec->getName()));
+            currentTable->setItem(i, 1, new QTableWidgetItem(elec->getBrand()));
+            currentTable->setItem(i, 2, new QTableWidgetItem(elec->getDesc()));
+            currentTable->setItem(i, 3, new QTableWidgetItem(QString("%1 元").arg(elec->getPrice())));
+            currentTable->setItem(i, 4, new QTableWidgetItem(QString("%1 个").arg(elec->getAmount())));
+            currentTable->item(i, 0)->setData(Qt::UserRole, elec->getID());
+            currentTable->item(i, 3)->setData(Qt::UserRole, elec->getPrice());
+            currentTable->item(i, 4)->setData(Qt::UserRole, elec->getAmount());
+            break;
+        }
+        case 2: { // 服装
+            Clothes *clothes = dynamic_cast<Clothes*>(product);
+            QStringList sexList = QStringList() << "通用" << "男装" << "女装";
+            currentTable->setItem(i, 0, new QTableWidgetItem(clothes->getName()));
+            currentTable->setItem(i, 1, new QTableWidgetItem(sexList[clothes->getSexi()]));
+            currentTable->setItem(i, 2, new QTableWidgetItem(clothes->getDesc()));
+            currentTable->setItem(i, 3, new QTableWidgetItem(QString("%1 元").arg(clothes->getPrice())));
+            currentTable->setItem(i, 4, new QTableWidgetItem(QString("%1 件").arg(clothes->getAmount())));
+            currentTable->item(i, 0)->setData(Qt::UserRole, clothes->getID());
+            currentTable->item(i, 3)->setData(Qt::UserRole, clothes->getPrice());
+            currentTable->item(i, 4)->setData(Qt::UserRole, clothes->getAmount());
+            break;
+        }
+        case 3: { // 食品
+            Food *food = dynamic_cast<Food*>(product);
+            currentTable->setItem(i, 0, new QTableWidgetItem(food->getName()));
+            currentTable->setItem(i, 1, new QTableWidgetItem(food->getDesc()));
+            currentTable->setItem(i, 2, new QTableWidgetItem(QString("%1 元").arg(food->getPrice())));
+            currentTable->setItem(i, 3, new QTableWidgetItem(food->getDate().toString()));
+            currentTable->setItem(i, 4, new QTableWidgetItem(QString("%1 个").arg(food->getAmount())));
+            currentTable->item(i, 0)->setData(Qt::UserRole, food->getID());
+            currentTable->item(i, 2)->setData(Qt::UserRole, food->getPrice());
+            currentTable->item(i, 4)->setData(Qt::UserRole, food->getAmount());
+            break;
+        }
+        }
     }
 }
 
@@ -1450,18 +1499,10 @@ void MainWindow::readBought(){
     }
 }
 
-void MainWindow::on_boughtB_clicked()
-{
-    readBought();
-    if(bought.getSize()==0){
-        QMessageBox::information(this,
-                                 "还没有买到的宝贝",
-                                 "还没有买到的宝贝");
-
-        return;
-    }
+void MainWindow::on_boughtB_clicked() {
+    readBought(); // 确保读取最新数据
     BoughtDialog dia(&bought);
-    dia.exec();
+    dia.exec(); // 无论是否为空，直接打开对话框
 }
 void MainWindow::on_searchButton_clicked()
 {

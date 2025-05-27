@@ -19,6 +19,7 @@ public:
 private:
     Ui::BoughtDialog *ui;
     Cart* bought;
+    QLabel *titleLabel; // 新增标题标签
     void showCart();
 };
 
