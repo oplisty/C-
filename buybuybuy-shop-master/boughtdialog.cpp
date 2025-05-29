@@ -9,7 +9,7 @@ BoughtDialog::BoughtDialog(Cart* bought, QWidget *parent) :
     ui->setupUi(this);
 
     // ==== 第一步：配置已有UI组件 ====
-    // 1. 标签样式强化（你在UI文件中放置的QLabel）
+    // 1. 标签样式强化（初始样式）
     ui->label->setStyleSheet(R"(
         QLabel {
             color: #333;
@@ -20,13 +20,13 @@ BoughtDialog::BoughtDialog(Cart* bought, QWidget *parent) :
     )");
     ui->label->setContentsMargins(0, 0, 0, 15); // 下边距15px
 
-    // 2. 返回按钮定位到右下角（你在UI文件中放置的QPushButton）
+    // 2. 返回按钮定位到右下角
     QHBoxLayout *btnLayout = new QHBoxLayout();
     btnLayout->addStretch();
     btnLayout->addWidget(ui->pushButton);
-    ui->verticalLayout->addLayout(btnLayout); // 使用你原有的垂直布局
+    ui->verticalLayout->addLayout(btnLayout); // 使用原有垂直布局
 
-    // 3. 表格样式优化（你在UI文件中放置的QTableWidget）
+    // 3. 表格样式优化
     ui->tableWidget->setStyleSheet(R"(
         QTableWidget {
             background-color: white;
@@ -42,11 +42,10 @@ BoughtDialog::BoughtDialog(Cart* bought, QWidget *parent) :
 
     // ==== 第二步：动态内容控制 ====
     if (bought->getSize() == 0) {
-        // 保留你原有的widget容器（用于空状态显示）
-        ui->tableWidget->setVisible(true);
-        ui->tableWidget->setVisible(false);
+        // 空状态处理
+        ui->label->setText("购物车为空");  // 设置提示文本
 
-        // 调整空状态标签样式
+        // 空状态样式
         ui->label->setStyleSheet(R"(
             QLabel {
                 color: #666;
@@ -54,29 +53,34 @@ BoughtDialog::BoughtDialog(Cart* bought, QWidget *parent) :
                 qproperty-alignment: AlignCenter;
             }
         )");
-    } else {
+
+        // 隐藏表格
         ui->tableWidget->setVisible(false);
+    } else {
+        // 非空状态
+        ui->label->setText("已购买商品");  // 设置标题文本
+        ui->tableWidget->setVisible(false); // 先隐藏，填充数据后显示
         showCart();
     }
 
     // ==== 第三步：窗口尺寸优化 ====
-    this->setMinimumSize(600, 400); // 保持你UI文件中设计的控件比例
+    this->setMinimumSize(600, 400);
 }
 
 void BoughtDialog::showCart()
 {
-    // 使用你在UI文件中设计的表格列
+    // 配置表格
     ui->tableWidget->setColumnCount(4);
     ui->tableWidget->setHorizontalHeaderLabels(
         QStringList() << "商品名称" << "描述" << "单价" << "数量");
 
-    // 列宽配置（兼容你的UI设计）
+    // 列宽配置
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
 
-    // 数据填充（保持你原有的数据结构）
+    // 填充数据
     vector<Product*> products = bought->getListCopy();
     ui->tableWidget->setRowCount(products.size());
     for (int i = 0; i < products.size(); ++i) {
@@ -86,6 +90,9 @@ void BoughtDialog::showCart()
         ui->tableWidget->setItem(i, 2, new QTableWidgetItem(QString("¥%1").arg(p->getPrice(), 0, 'f', 2)));
         ui->tableWidget->setItem(i, 3, new QTableWidgetItem(QString::number(p->getAmount())));
     }
+
+    // 关键：显示填充后的表格
+    ui->tableWidget->setVisible(true);
 }
 
 BoughtDialog::~BoughtDialog()
